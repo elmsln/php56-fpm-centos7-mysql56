@@ -51,7 +51,6 @@ cat security/apache_default.conf > /etc/httpd/conf.security.d/apache_default.con
 # our domain config
 mkdir /etc/httpd/conf.sites.d
 echo IncludeOptional conf.sites.d/*.conf >> /etc/httpd/conf/httpd.conf
-cat domains/8080-domain.conf > /etc/httpd/conf.sites.d/test.conf
 
 # our performance config
 echo IncludeOptional conf.performance.d/*.conf >> /etc/httpd/conf/httpd.conf
@@ -66,7 +65,6 @@ sed -i 's#;date.timezone =#date.timezone = "America/New_York"#g' /etc/php.ini
 systemctl start firewalld.service
 systemctl enable firewalld.service
 firewall-cmd --permanent --add-port=80/tcp
-firewall-cmd --permanent --add-port=8080/tcp
 firewall-cmd --permanent --add-port=22/tcp
 systemctl restart firewalld.service
 
@@ -75,13 +73,11 @@ systemctl restart firewalld.service
 systemctl enable httpd.service
 systemctl enable mysqld.service
 systemctl enable php-fpm.service
-systemctl enable varnish.service
 
 # Start all the services we use.
 systemctl start php-fpm.service
 systemctl start  mysqld.service
 systemctl start httpd.service
-systemctl start varnish.service
 
 # Install Drush globally.
 curl -sS https://getcomposer.org/installer | php
